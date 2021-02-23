@@ -2,8 +2,15 @@ import express from 'express'
 
 const app = express()
 
-app.get('/users', (request, response) => {
+app.get('/', (request, response) => {
     return response.json({message: 'Hello NLW04'})
+})
+
+app.use(express.json()) 
+
+app.post('/', (request, response) => {
+    console.log(request.body)
+    return response.json({message: 'The data was received successfully'})
 })
 
 app.listen(3333, () => {
