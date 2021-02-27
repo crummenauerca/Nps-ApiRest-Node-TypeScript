@@ -14,6 +14,12 @@ class SurveyController {
     await surveyRepository.save(survey)
     return response.status(201).json(survey)
   }
+
+  async show(request: Request, response: Response) {
+    const surveysReposiory = getCustomRepository(SurveyRepository)
+    const all = await surveysReposiory.find()
+    return response.json(all)
+  }
 }
 
 export { SurveyController }
