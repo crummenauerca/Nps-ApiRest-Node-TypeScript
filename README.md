@@ -10,3 +10,7 @@ yarn jest --init
 yarn add ts-jest -D
 
 npm i --save-dev @types/jest
+
+yarn add supertest
+
+set NODE_ENV=test
