@@ -3,6 +3,7 @@ import { getCustomRepository } from "typeorm"
 import { SurveyRepository } from '../repositories/SurveyRepository'
 import { SurveyUserRepository } from "../repositories/SurveyUserRepository"
 import { UserRepository } from '../repositories/UserRepository'
+import SendMailService from '../services/SendMailService'
 
 class SendMailController {
   async execute(request: Request, response: Response) {
@@ -11,26 +12,28 @@ class SendMailController {
     const surveyRepository = getCustomRepository(SurveyRepository)
     const surveyUserRepository = getCustomRepository(SurveyUserRepository)
 
-    const userAlreadyExists = await userRepository.findOne({ email })
-    if (!userAlreadyExists) {
+    const user = await userRepository.findOne({ email })
+    if (!user) {
       return response.status(400).json({
         error: "User with this email does not exists!"
       })
     }
 
-    const surveyAlreadyExists = await surveyRepository.findOne({ id: survey_id })
-    if (!surveyAlreadyExists) {
+    const survey = await surveyRepository.findOne({ id: survey_id })
+    if (!survey) {
       return response.status(400).json({
         error: "This survey does not exists!"
       })
     }
 
     const surveyUser = await surveyUserRepository.create({
-      user_id: userAlreadyExists.id,
-      survey_id: surveyAlreadyExists.id
+      user_id: user.id,
+      survey_id: survey.id
     })
     await surveyUserRepository.save(surveyUser)
-    // Send email to user...
+    
+    await SendMailService.execute(user.email, survey.title, survey.description)
+    
     return response.json(surveyUser)
   }
 }
