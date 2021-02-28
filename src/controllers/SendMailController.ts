@@ -1,3 +1,4 @@
+import { resolve } from 'path'
 import { Request, Response } from 'express'
 import { getCustomRepository } from "typeorm"
 import { SurveyRepository } from '../repositories/SurveyRepository'
@@ -31,9 +32,15 @@ class SendMailController {
       survey_id: survey.id
     })
     await surveyUserRepository.save(surveyUser)
-    
-    await SendMailService.execute(user.email, survey.title, survey.description)
-    
+
+    const npsPath = resolve(__dirname, "..", "views", "emails", "npsMail.hbs")
+
+    const variables = {
+      name: user.name, title: survey.title, description: survey.description
+    }
+
+    await SendMailService.execute(user.email, survey.title, variables, npsPath)
+
     return response.json(surveyUser)
   }
 }
