@@ -14,7 +14,7 @@ class SendMailController {
     const userAlreadyExists = await userRepository.findOne({ email })
     if (!userAlreadyExists) {
       return response.status(400).json({
-        error: "User with this email does not exist!"
+        error: "User with this email does not exists!"
       })
     }
 
@@ -25,9 +25,9 @@ class SendMailController {
       })
     }
 
-    const surveyUser = surveyUserRepository.create({
+    const surveyUser = await surveyUserRepository.create({
       user_id: userAlreadyExists.id,
-      survey_id
+      survey_id: surveyAlreadyExists.id
     })
     await surveyUserRepository.save(surveyUser)
     // Send email to user...

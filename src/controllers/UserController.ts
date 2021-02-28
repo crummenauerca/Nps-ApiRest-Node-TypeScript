@@ -6,7 +6,6 @@ class UserController {
   async create(request: Request, response: Response) {
     const { name, email } = request.body
     const userRepository = getCustomRepository(UserRepository)
-
     const userAlreadyExists = await userRepository.findOne({ email })
 
     if (userAlreadyExists) {
@@ -16,10 +15,14 @@ class UserController {
     }
 
     const user = userRepository.create({ name, email })
-
     await userRepository.save(user)
-
     return response.status(201).send(user)
+  }
+
+  async show(request: Request, response: Response) {
+    const userRepository = getCustomRepository(UserRepository)
+    const all = await userRepository.find()
+    return response.json(all)
   }
 }
 

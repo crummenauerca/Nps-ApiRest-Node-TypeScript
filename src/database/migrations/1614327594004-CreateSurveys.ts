@@ -5,23 +5,21 @@ export class CreateSurveys1614327594004 implements MigrationInterface {
     await queryRunner.createTable(
       new Table({
         name: 'surveys',
-        columns: [
-          {
-            name: 'id',
-            type: 'uuid',
-            isPrimary: true
-          }, {
-            name: 'title',
-            type: 'varchar'
-          }, {
-            name: 'description',
-            type: 'varchar'
-          }, {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()'
-          }
-        ]
+        columns: [{
+          name: 'id',
+          type: 'uuid',
+          isPrimary: true
+        }, {
+          name: 'title',
+          type: 'varchar'
+        }, {
+          name: 'description',
+          type: 'varchar'
+        }, {
+          name: 'created_at',
+          type: 'timestamp',
+          default: 'now()'
+        }]
       })
     )
   }
