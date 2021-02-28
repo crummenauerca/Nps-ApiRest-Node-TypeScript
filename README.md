@@ -18,3 +18,5 @@ yarn typeorm migration:run
 
 yarn add nodemailer
 npm i --save-dev @types/nodemailer
+
+yarn add handlebars
